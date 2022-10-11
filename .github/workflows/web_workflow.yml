@@ -9,6 +9,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: browser-actions/setup-chrome@latest
+      - uses: subosito/flutter-action@v2
       - name: Run integration tests
         run: flutter drive \
           --driver=test/test_driver/integration_test.dart \
