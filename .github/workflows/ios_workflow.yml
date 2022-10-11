@@ -1,0 +1,76 @@
+name: Ios workflow
+
+on:
+  workflow_call:
+
+jobs:
+  e2e:
+    name: Integration test
+    strategy:
+      matrix:
+        device: [ iPhone 11 Pro Max (13.1) ]
+      fail-fast: false
+    runs-on: macos-latest
+    steps:
+      - name: List all simulators
+        run: xcrun instruments -s
+      - name: Start Simulator
+        run: |
+          UDID=$(
+            xcrun instruments -s |
+            awk \
+              -F ' *[][]' \
+              -v 'device=${{ matrix.device }}' \
+              '$1 == device { print $2 }'
+          )
+          xcrun simctl boot "${UDID:?No Simulator with this name found}"
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - name: Run integration tests
+        run: flutter drive test/integration_test/app_test.dart
+
+  build:
+    name: Build Flutter App
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Get dependencies
+        run: flutter channel beta
+      - run: flutter upgrade
+      - run: flutter pub get
+      - run: flutter config --enable-ios
+      - run: flutter create .
+      - run: flutter build ios -t lib/main_dev.dart --release --no-codesign
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios_build
+          path: build/ios
+
+  deploy:
+    name: Deploy app
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - uses: actions/download-artifact@v3
+        with:
+          name: ios_build
+          path: ios_build
+      - name: Upload IPA
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
+        with:
+          appId: ${{secrets.FIREBASE_IOS_APPID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          group: testers
+          file: Runner.ipa
