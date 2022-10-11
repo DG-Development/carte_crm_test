@@ -14,7 +14,7 @@ jobs:
         with:
           channel: stable
       - name: Run integration tests
-        uses: browser-actions/setup-chrome@latest
+        uses: browser-actions/setup-chromedriver@v1
         with:
           channel: 'stable'
       - run: chromedriver --port=4444
