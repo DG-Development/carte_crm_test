@@ -25,7 +25,7 @@ jobs:
           channel: stable
       - run: flutter pub get
       - name: Run integration tests
-        run: flutter drive test/integration_test/app_test.dart
+        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart
 
   build:
     needs: e2e

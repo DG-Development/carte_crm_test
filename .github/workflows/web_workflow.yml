@@ -17,7 +17,6 @@ jobs:
         uses: nanasess/setup-chromedriver@v1
         with:
           channel: 'stable'
-      - run: chromedriver --port=4444
       - run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d chrome
 
   build:

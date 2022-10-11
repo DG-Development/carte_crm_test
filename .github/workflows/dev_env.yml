@@ -4,6 +4,8 @@ on:
     branches:
       - main
 jobs:
+  call-module-ci:
+    uses: ./.github/workflows/module_ci.yml
   call-web-workflow:
     uses: ./.github/workflows/web_workflow.yml
   call-apk-workflow:
