@@ -6,3 +6,5 @@ on:
 jobs:
   call-web-workflow:
     uses: ./.github/workflows/web_workflow.yml
+  call-apk-workflow:
+    uses: ./.github/workflows/apk_workflow.yml
