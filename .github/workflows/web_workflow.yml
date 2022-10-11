@@ -8,13 +8,18 @@ jobs:
     name: Integration test
     runs-on: macos-latest
     steps:
-      - uses: browser-actions/setup-chrome@latest
-      - uses: subosito/flutter-action@v2
       - name: Run integration tests
-        run: flutter drive \
-          --driver=test/test_driver/integration_test.dart \
-          --target=test/integration_test/app_test.dart \
-          -d chrome
+        uses: browser-actions/setup-chrome@latest
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter config --enable-web
+      - run: flutter create .
+      - run: flutter drive \
+        --driver=test/test_driver/integration_test.dart \
+        --target=test/integration_test/app_test.dart \
+        -d chrome
   build:
     needs: e2e
     name: Build Flutter App
