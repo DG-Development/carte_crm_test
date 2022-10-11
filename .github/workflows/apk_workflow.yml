@@ -28,6 +28,7 @@ jobs:
           script: flutter test integration_test --verbose
 
   build:
+    needs: e2e
     name: Build Flutter App
     runs-on: ubuntu-latest
     steps:

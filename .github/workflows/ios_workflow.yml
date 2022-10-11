@@ -33,6 +33,7 @@ jobs:
         run: flutter drive test/integration_test/app_test.dart
 
   build:
+    needs: e2e
     name: Build Flutter App
     runs-on: macos-latest
     steps:
