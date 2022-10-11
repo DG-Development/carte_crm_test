@@ -13,16 +13,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: List all simulators
-        run: xcrun simctl list -s
+        run: xcrun xctrace list devices
       - name: Start Simulator
         run: |
-          UDID=$(
-            xcrun instruments -s |
-            awk \
-              -F ' *[][]' \
-              -v 'device=${{ matrix.device }}' \
-              '$1 == device { print $2 }'
-          )
+          UDID=$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
+          echo $UDID
           xcrun simctl boot "${UDID:?No Simulator with this name found}"
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
