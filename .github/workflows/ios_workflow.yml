@@ -8,7 +8,7 @@ jobs:
     name: Integration test
     strategy:
       matrix:
-        device: [ iPhone 13 Pro Simulator (15.2) ]
+        device: [ iPhone 11 Pro Max Simulator (15.2) ]
       fail-fast: false
     runs-on: macos-latest
     steps:
