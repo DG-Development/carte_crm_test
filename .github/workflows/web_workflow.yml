@@ -16,10 +16,8 @@ jobs:
       - run: flutter pub get
       - run: flutter config --enable-web
       - run: flutter create .
-      - run: flutter drive \
-        --driver=test/test_driver/integration_test.dart \
-        --target=test/integration_test/app_test.dart \
-        -d chrome
+      - run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d chrome
+
   build:
     needs: e2e
     name: Build Flutter App
