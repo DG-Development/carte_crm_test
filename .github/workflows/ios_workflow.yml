@@ -20,6 +20,7 @@ jobs:
         id: simulator
       - run: |
           if ${{steps.simulator.outputs.UDID}}; then 
+            echo "here"
             echo "${{steps.simulator.outputs.UDID}}"
             xcrun simctl boot ${{steps.simulator.outputs.UDID}}
             open -a Simulator --args -CurrentDeviceUDID ${{steps.simulator.outputs.UDID}}
