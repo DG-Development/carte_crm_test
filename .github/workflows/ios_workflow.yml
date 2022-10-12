@@ -22,7 +22,7 @@ jobs:
           if ${{steps.simulator.outputs.UDID}}; then 
             echo "${{steps.simulator.outputs.UDID}}"
             xcrun simctl boot ${{steps.simulator.outputs.UDID}}
-            xcrun simctl boot "${{steps.simulator.outputs.UDID}}"
+            open -a Simulator --args -CurrentDeviceUDID ${{steps.simulator.outputs.UDID}}
             echo "here"
           fi
       - uses: actions/checkout@v3
