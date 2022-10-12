@@ -13,11 +13,13 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+      - uses: browser-actions/setup-chrome@latest
       - name: Run integration tests
         uses: nanasess/setup-chromedriver@v1
         with:
           channel: 'stable'
-      - run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d chrome
+      - run: chromedriver --port=4444 &
+      - run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d web-server
 
   build:
     needs: e2e

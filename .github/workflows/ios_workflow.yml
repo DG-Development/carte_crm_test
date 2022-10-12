@@ -11,12 +11,14 @@ jobs:
         device: [ iPhone 11 Pro Max Simulator (15.2) ]
       fail-fast: false
     runs-on: macos-latest
+    env:
+      UDID:
     steps:
       - name: List all simulators
         run: xcrun xctrace list devices
       - name: Start Simulator
         run: |
-          UDID=$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
+          $UDID=$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
           echo $UDID
           xcrun simctl boot "${UDID:?No Simulator with this name found}"
       - uses: actions/checkout@v3
@@ -25,7 +27,7 @@ jobs:
           channel: stable
       - run: flutter pub get
       - name: Run integration tests
-        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart
+        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d $UDID
 
   build:
     needs: e2e
