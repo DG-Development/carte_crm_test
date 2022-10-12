@@ -20,7 +20,7 @@ jobs:
         id: simulator
       - run: |
           echo "${{steps.simulator.outputs.UDID}}"
-          xcrun simctl boot "${${{steps.simulator.outputs.UDID}}:?No Simulator with this name found}"
+          xcrun simctl boot "${{steps.simulator.outputs.UDID}}:?No Simulator with this name found"
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
