@@ -22,12 +22,15 @@ jobs:
           if ${{steps.simulator.outputs.UDID}}; then 
             echo "${{steps.simulator.outputs.UDID}}"
             xcrun simctl boot ${{steps.simulator.outputs.UDID}}
+            xcrun simctl boot "${{steps.simulator.outputs.UDID}}"
+            echo "here"
           fi
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
       - run: flutter pub get
+      - run: flutter devices
       - name: Run integration tests
         run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d ${{steps.simulator.outputs.UDID}}
 
