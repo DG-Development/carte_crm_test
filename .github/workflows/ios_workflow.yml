@@ -15,18 +15,19 @@ jobs:
       - name: List all simulators
         run: xcrun xctrace list devices
       - name: Start Simulator
-        env:
-          UDID: $(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
         run: |
-          echo $UDID
-          xcrun simctl boot "${UDID:?No Simulator with this name found}"
+          echo "::set-output name=UDID::$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')"
+        id: simulator
+      - run: |
+          echo ${{step.simulator.outputs.UDID}}
+          xcrun simctl boot "${${{step.simulator.outputs.UDID}}:?No Simulator with this name found}"
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
       - run: flutter pub get
       - name: Run integration tests
-        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d $UDID
+        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d ${{step.simulator.outputs.UDID}}
 
   build:
     needs: e2e
