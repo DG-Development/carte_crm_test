@@ -22,6 +22,7 @@ jobs:
           if ${{steps.simulator.outputs.UDID}}; then 
             echo "${{steps.simulator.outputs.UDID}}"
             xcrun simctl boot ${{steps.simulator.outputs.UDID}}
+          fi
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
