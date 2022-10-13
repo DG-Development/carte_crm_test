@@ -67,6 +67,9 @@ jobs:
         with:
           name: ios_build
           path: ios_build
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Upload IPA
         uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
         with:
