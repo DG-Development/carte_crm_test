@@ -35,13 +35,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - uses: actions/download-artifact@v3
         with:
           name: apk_build
           path: apk_build
+      - run: ls apk_build
+      - run: ls outputs/apk/release/app-release.apk
+      - run: ls outputs
       - name: Upload APK
         uses: wzieba/Firebase-Distribution-Github-Action@master
         with:
