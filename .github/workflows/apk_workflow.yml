@@ -48,4 +48,4 @@ jobs:
           appId: 1:420295022617:android:bc466a27c1a670834d3288
           token: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
           group: testers
-          file: app/outputs/apk/release/app-release.apk
+          file: /outputs/apk/release/app-release.apk

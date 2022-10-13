@@ -47,4 +47,4 @@ jobs:
           appId: 1:420295022617:ios:a8368f9757aec30e4d3288
           token: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
           group: testers
-          file: Release-iphoneos/Runner.ipa
+          file: Release-iphoneos/Runner.app
