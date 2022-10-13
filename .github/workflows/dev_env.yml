@@ -6,3 +6,7 @@ on:
 jobs:
   web-workflow:
     uses: ./.github/workflows/web_workflow.yml
+  apk-workflow:
+    uses: ./.github/workflows/apk_workflow.yml
+  ios-workflow:
+    uses: ./.github/workflows/ios_workflow.yml

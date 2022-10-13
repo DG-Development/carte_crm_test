@@ -4,31 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  e2e:
-    name: Integration test
-    strategy:
-      matrix:
-        api-level: [29]
-      fail-fast: true
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Flutter SDK
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - name: Install Flutter dependencies
-        run: flutter pub get
-      - name: Run integration tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          profile: Nexus 6
-          script: flutter test test/integration_test/app_test.dart --verbose
-
   build:
-    needs: e2e
     name: Build Flutter App
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +46,7 @@ jobs:
       - name: Upload APK
         uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
         with:
-          appId: ${{secrets.FIREBASE_ANDROID_APPID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
+          appId: 1:420295022617:android:bc466a27c1a670834d3288
+          token: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
           group: testers
           file: app-release.aap
