@@ -52,6 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: apk_build
+          path: build/apk
 
   deploy:
     name: Deploy app
@@ -65,6 +66,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: apk_build
+          path: apk_build
       - name: Upload APK
         uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
         with:
