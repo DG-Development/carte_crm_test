@@ -41,7 +41,6 @@ jobs:
           path: apk_build
       - run: ls apk_build
       - run: ls apk_build/outputs/apk/release/app-release.apk
-      - run: ls outputs
       - name: Upload APK
         uses: wzieba/Firebase-Distribution-Github-Action@master
         with:
