@@ -37,9 +37,22 @@ jobs:
           name: web_build
           path: web_build
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: actions/checkout@v2
+      - run: npm ci && npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
-          PROJECT_ID: cartertest-ea36f
+          repoToken: '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'
+          firebaseServiceAccount: '{
+            "type": "service_account",
+            "project_id": "cartertest-ea36f",
+            "private_key_id": "004a2dd00b1bdd93ef88e7b8c70fb6bf033dca2d",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC3GQqhMB+iDUSu\nWLzxuBWAOSVuoIKvHuNB4TA7mjhN+RcQAghDr0xQS7/1yUa8+xoWI3twwrTCSUmt\nYI9MlbJItWkB7GIvsQNBuBI9M8/7KIh5BxQ5cPXGjypVV+JMpVMWzA8zJInQ9pbu\nMqOT0sZ/teAlIkQ5CGwoadylkO0wwn7OuvoVlMu44V+/COJ+3NbdayeDKrEopH/L\nHlkF9uJUxRHStssuA47GkgfxTVxqy+7JrfP8a5gotnDWWiVsGGv91gLzyER61H06\nn4auIZPpP7S7cf3IV1X0ftb47h9Mh/A+gTqAvm8CRhlHrEN400bHze6imQgkeUTN\n8/YkgDApAgMBAAECggEADxxrNunalnx7WFs8/sMHTT2KJBLtrifBsDh2S1j7QB4o\nY9sTFQj05qSVy2Jo6uRbXwvfHmuHUQiM4tj3AqZRIDSOncjFQrPcdbJMGQ57YfpS\npxBpQCNdOV2r6/60j8hOLvG46Grhz+PmCXMW8naBCN25Cb+F+2IBUSWJfwWSucUT\nxxwSecppjddLbYbzBiHO/aSWo34UEJMedtSo8SdKiH+v0fQwiyvaEU3UoeGbSr+r\nFVCo217q/rdXdntn+jRWO8Pgm/ueT/cRyzXHaAQ/YKPigiFEVfeouNwwdRY052Si\neZJVI8YO7iyWDXaOfcANIKuZLpKqNbXueE/+t9iiIQKBgQDY/SDxf9pXQzLjbWfR\nr0HsjKVl3N+iQiihzWOgQKdfl67EA8Phduug92qfLXp2hKHQVrdvpXUV9EecRnV0\nE4tXfilDwSqLxOhP1PIhyP6xgzAF0AtxZdwiwvLlYJ9Cemj4yj7KlOzgLY0oV96Z\ncWhGPZ0qxsBDEShWz7GIp1yqGQKBgQDYBBZFyjw4LArKnL+ys6oOKLQKmyX71KSw\nJFJbQQuzW3H9+n4f4UUkYs6Sj0yQteyxDocLg8iv32Mqqj0z/0I3uEPnSBftYsGa\nWeBvTkAgwBh0wt9ZjV/82FsqjmV2pBD8lGsDZg14DcpoRFe640pxwZecINy4a53h\nf4h8zs2YkQKBgH2xa4LZJ9ZCk9jQCEKbfdmTwz+VSWoJXtYTTrGGoi2qhM8Ay1fw\ndh+hEn8wbe73d3BiuxGOS5uzDERHQERECgRdjXO1EnsyTcvos3XEo1yafJfxYp+G\nfJUaTm92n+p3VBVBukvJJsnZORp0g/poihmeGUutI7P13WMkHlflcrUJAoGARQ9J\nb5ZwGiU6bfwe7SqzO0OYC6v+QLyCyi1ShwoMi5K4ptHmcJq8WB2enQxjFgCTYyeZ\n1PyUtGVeds1mM7FvohCu5MoPnDzuWEJTlkIWDmJbbzi93wtrnJIu0zQjDAL3y0hH\nzhZaR/9grmTrBzyTGDskFS4MYolFOEplgEE9SYECgYARq0lZZ/T/f0tIwq0Nsuj0\n3Sv4nJWgte2X30MuVFXG/ja67R7C/T+rlQoX6WtpcWZnEv/r99I+kqD0x7WIm+ya\nP6Si1siyHd0zZ7DPox91+9oHu8XbAdO+TmpisfDyfcuTKVt3J1Zx/NiHk2OKXBiF\n06UtLizDCxPA0XOP7ArHcg==\n-----END PRIVATE KEY-----\n",
+            "client_email": "firebase-adminsdk-rkkea@cartertest-ea36f.iam.gserviceaccount.com",
+            "client_id": "118077590404390894573",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rkkea%40cartertest-ea36f.iam.gserviceaccount.com"
+          }'
+          channelId: live
+          projectId: cartertest-ea36f
