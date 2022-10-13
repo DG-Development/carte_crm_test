@@ -31,7 +31,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
           name: web_build
@@ -41,4 +40,4 @@ jobs:
         with:
           args: deploy --only hosting
         env:
-          FIREBASE_TOKEN: '${{secrets.FIREBASE_TOKEN}}'
+          FIREBASE_TOKEN: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
