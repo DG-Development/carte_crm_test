@@ -38,7 +38,7 @@ jobs:
           name: web_build
           path: web_build
       - name: Deploy to Firebase
-          uses: w9jds/firebase-action@master
+        uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
         env:
