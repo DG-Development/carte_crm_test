@@ -23,11 +23,12 @@ jobs:
       - run: flutter config --enable-android
       - run: flutter create .
       - run: flutter build apk -t lib/main_dev.dart
+      - run: flutter build appbundle -t lib/main_dev.dart
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
         with:
           name: apk_build
-          path: build/apk
+          path: build/app
 
   deploy:
     name: Deploy app
