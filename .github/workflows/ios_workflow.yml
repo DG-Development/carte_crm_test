@@ -48,12 +48,21 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - run: flutter build ipa --export-options-plist=ExportOptions.plist --release
+      - name: Build
+        run: flutter build ios --release --no-codesign
+      - name: Build resolve Swift dependencies
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release"
+      - name: Build xArchive
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM=4548NWFTN8 -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build/app.xcarchive
+      - name: Export ipa
+        run: |
+          xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ExportOptions.plist
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ipa_build
-          path: build/ios/ipa/carte_crm_test.ipa
+          name: App.ipa
+          path: /Users/runner/work/YOUR_APP/YOUR_APP/app/build-output/ios/ipa/carte_crm_test.ipa
 
   deploy:
     name: Deploy app
@@ -62,7 +71,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: ipa_build
+          name: App.ipa
       - uses: actions/setup-node@v3
         with:
           node-version: 16
