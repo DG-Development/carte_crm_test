@@ -19,25 +19,58 @@ jobs:
       - run: flutter pub get
       - run: flutter config --enable-ios
       - run: flutter create .
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: base64 build_certificate.p12 | pbcopy
+          P12_PASSWORD: admin
+          BUILD_PROVISION_PROFILE_BASE64: base64 provisioning_profile.mobileprovision | pbcopy
+          KEYCHAIN_PASSWORD: 7362
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+          
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+          
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
       - run: flutter build ios -t lib/main_dev.dart --release --no-codesign
+      - name: Build resolve Swift dependencies
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release"
+      - name: Build xArchive
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM=4548NWFTN8 -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive "
+      - name: Export ipa
+        run: |
+          xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ExportOptions.plist
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ios_build
-          path: build/ios
+          name: App.ipa
+          path: /Users/runner/work/YOUR_APP/YOUR_APP/app/build-output/ios/ipa/carte_crm_test.ipa
 
   deploy:
     name: Deploy app
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - uses: actions/download-artifact@v3
         with:
-          name: ios_build
-          path: ios_build
+          name: App.ipa
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -46,5 +79,5 @@ jobs:
         with:
           appId: 1:420295022617:ios:a8368f9757aec30e4d3288
           token: 1//069zeH2EL8NWICgYIARAAGAYSNwF-L9IrWy9_03-PKJVkSJyV1zAoSmkZKoLlecYkqXcQedU1EshrwoBW7jCFX5t78aosc8QhONA
-          group: testers
-          file: Release-iphoneos/Runner.app
+          groups: testers
+          file: carte_crm_test.ipa
