@@ -54,7 +54,7 @@ jobs:
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release"
       - name: Build xArchive
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM=4548NWFTN8 -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build/app.xcarchive
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM=4548NWFTN8 -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build/app.xcarchive PROVISIONING_PROFILE=00008030-000270243679802E -allowProvisioningUpdates
       - name: Export ipa
         run: |
           xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ExportOptions.plist
