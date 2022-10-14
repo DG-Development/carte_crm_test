@@ -79,10 +79,10 @@ jobs:
       - name: Build
         run: flutter build ios -t lib/main_dev.dart --release --no-codesign
       - name: Archive Production Artifact
-          uses: actions/upload-artifact@v3
-          with:
-            name: ios_build
-            path: build/ios
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios_build
+          path: build/ios
 
   deploy:
     name: Deploy app
