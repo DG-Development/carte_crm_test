@@ -4,7 +4,25 @@ on:
   workflow_call:
 
 jobs:
+  e2e:
+    name: Integration test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - uses: browser-actions/setup-chrome@latest
+      - name: Run integration tests
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          channel: 'stable'
+      - run: chromedriver --port=4444 &
+      - run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart -d web-server
+
   build:
+    needs: e2e
     name: Build Flutter App
     runs-on: ubuntu-latest
     steps:

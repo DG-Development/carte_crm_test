@@ -4,7 +4,35 @@ on:
   workflow_call:
 
 jobs:
+  e2e:
+    name: Integration test
+    strategy:
+      matrix:
+        device: [ iPhone 11 Pro Max Simulator (15.2) ]
+      fail-fast: false
+    runs-on: macos-latest
+    steps:
+      - name: List all simulators
+        run: xcrun xctrace list devices
+      - name: Start Simulator
+        run: |
+          UDID=$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
+          echo $UDID
+          xcrun simctl boot "${UDID:?No Simulator with this name found}"
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter channel beta
+      - run: flutter upgrade
+      - run: flutter pub get
+      - run: flutter config --enable-ios
+      - run: flutter create .
+      - name: Run integration tests
+        run: flutter drive --driver=test/test_driver/integration_test.dart --target=test/integration_test/app_test.dart
+
   build:
+    needs: e2e
     name: Build Flutter App
     runs-on: macos-latest
     steps:
