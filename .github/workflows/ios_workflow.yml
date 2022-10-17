@@ -15,7 +15,8 @@ jobs:
       - name: List all simulators
         env:
           PROJECT_ID: ${{secrets.PROJECT_ID}}
-        run: xcrun xctrace list devices
+        run: echo $PROJECT_ID
+      - run: xcrun xctrace list devices
       - name: Start Simulator
         run: |
           UDID=$(xcrun xctrace list devices | grep "^${{ matrix.device }}" | awk '{gsub(/[()]/,""); print $NF}')
