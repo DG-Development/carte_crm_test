@@ -4,5 +4,5 @@ on:
     branches:
       - main
 jobs:
-  ios-workflow:
-    uses: ./.github/workflows/ios_workflow.yml
+   module-ci:
+     uses: ./.github/workflows/module_ci.yml
